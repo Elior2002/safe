@@ -28,8 +28,10 @@ void main(void)
 	initSYS();
 
 	MenuScreen();
-	//PlayI(200);
-
+	PCA0CN    = 0x40;
+	servo(2300);
+  delay_ms(2000);
+	PCA0CN    = 0x00;
 	while(1) {
 		if(!T_IRQ) {
 			delay_ms(10);
@@ -79,14 +81,14 @@ void main(void)
 			}
 			else if(ButtonNum==6) {
 				LCD_fillScreen(BLACK);		
-				LCD_print2C(20,150,"SERVO ",3,WHITE,BLACK);	
-				servo(1000);
+				LCD_print2C(20,150,"SERVO ",3,WHITE,BLACK);
+				PCA0CN    = 0x40;
+				servo(700);
 				delay_ms(2000);
 				LCD_print2C(20,150,"SERVO ",3,WHITE,BLACK);		
-				servo(1500);
+				servo(2300);
 				delay_ms(2000);
-				servo(2000);
-				delay_ms(2000);
+				PCA0CN    = 0x00;
 				MenuScreen();
 			}
 			else if(ButtonNum==7) {
@@ -140,12 +142,21 @@ void main(void)
 					else
 						PlayI(100); 
 
-					servo(2000);
+					PCA0CN    = 0x40;
+					servo(700);
 					LCD_print2C(20,150,"open ",3,WHITE,BLACK);	
 					delay_ms(2000);
-					while(sensorDOOR==1);		
-					servo(1000);
+					while(sensorDOOR==0);//no hand
+					delay_ms(1);
+					//printf("sensorDOOR =%d ",sensorDOOR);
+					while(sensorDOOR==1);// hand
+					//printf("sensorDOOR =%d ",sensorDOOR);
+					delay_ms(2000);
+					servo(2300);
 					LCD_print2C(20,150,"close ",3,WHITE,BLACK);
+					delay_ms(2000);
+					PCA0CN    = 0x00;
+					
 
 				}
 				else{
